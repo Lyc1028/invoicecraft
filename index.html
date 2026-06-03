@@ -1,0 +1,353 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvoiceCraft — Free Online Invoice Generator | Create & Download PDF Invoices</title>
+    <meta name="description" content="Create professional invoices in seconds. Free online invoice generator with PDF export, multi-currency support, and dark mode. No signup required.">
+    <meta name="keywords" content="invoice generator, free invoice maker, online invoice creator, invoice template, PDF invoice generator, freelance invoice, small business invoice">
+    <meta name="author" content="InvoiceCraft">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+    <link rel="canonical" href="https://lyc1028.github.io/invoicecraft">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="InvoiceCraft — Free Online Invoice Generator">
+    <meta property="og:description" content="Create professional invoices in seconds. Free, no signup, instant PDF download.">
+    <meta property="og:url" content="https://lyc1028.github.io/invoicecraft">
+    <meta name="twitter:card" content="summary_large_image">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebApplication","name":"InvoiceCraft","description":"Free online invoice generator.","applicationCategory":"BusinessApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config={darkMode:'class',theme:{extend:{fontFamily:{sans:['Inter','system-ui','sans-serif']}}}}</script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *{transition-property:background-color,border-color,color,box-shadow;transition-duration:.25s}
+        @media print{body *{visibility:hidden!important}#invoice-preview,#invoice-preview *{visibility:visible!important}#invoice-preview{position:absolute!important;left:0!important;top:0!important;width:100%!important;padding:40px!important;margin:0!important;box-shadow:none!important;border:none!important;background:#fff!important;color:#000!important}.dark #invoice-preview{background:#fff!important;color:#000!important}}
+        input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}input[type=number]{-moz-appearance:textfield}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}.fade-in{animation:fadeInUp .5s ease-out forwards}
+        @keyframes toastIn{from{transform:translateX(120%);opacity:0}to{transform:translateX(0);opacity:1}}@keyframes toastOut{from{transform:translateX(0);opacity:1}to{transform:translateX(120%);opacity:0}}
+        .toast-in{animation:toastIn .3s ease-out}.toast-out{animation:toastOut .3s ease-in}
+        .input-field{width:100%;padding:.625rem 1rem;border-radius:.75rem;border:1px solid #e2e8f0;background:#fff;color:#1e293b;outline:none;font-size:.875rem;transition:all .2s}
+        .input-field:focus{border-color:#6366f1;box-shadow:0 0 0 3px rgba(99,102,241,.12)}.input-field::placeholder{color:#94a3b8}
+        .dark .input-field{border-color:rgba(51,65,85,.6);background:rgba(30,41,59,.5);color:#e2e8f0}.dark .input-field:focus{border-color:#6366f1}.dark .input-field::placeholder{color:#64748b}
+        .item-input{padding:.5rem .75rem;border-radius:.5rem;border:1px solid #e2e8f0;background:#fff;color:#1e293b;outline:none;font-size:.8125rem;width:100%;transition:all .2s}
+        .item-input:focus{border-color:#6366f1;box-shadow:0 0 0 2px rgba(99,102,241,.1)}
+        .dark .item-input{border-color:rgba(51,65,85,.6);background:rgba(30,41,59,.5);color:#e2e8f0}.dark .item-input:focus{border-color:#6366f1}
+    </style>
+</head>
+<body class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-200 font-sans antialiased"><header class="sticky top-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-slate-900/70 border-b border-slate-200/60 dark:border-slate-800/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+        <div class="flex items-center gap-3 shrink-0">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/25">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg>
+            </div>
+            <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-violet-600 dark:from-indigo-400 dark:to-violet-400 bg-clip-text text-transparent">InvoiceCraft</span>
+        </div>
+        <div class="flex items-center gap-1.5 sm:gap-2">
+            <select id="lang-select" onchange="setLang(this.value)" class="text-xs font-medium px-2 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 cursor-pointer outline-none">
+                <option value="en">EN</option><option value="zh">中文</option><option value="ja">日本語</option><option value="es">ES</option><option value="pt">PT</option>
+            </select>
+            <button onclick="loadDemoData()" class="hidden sm:inline-flex text-xs font-semibold px-3 py-2 text-indigo-600 dark:text-indigo-400 border border-indigo-200 dark:border-indigo-800/60 rounded-xl hover:bg-indigo-50 dark:hover:bg-indigo-950/30 transition-all" data-i18n="load_demo">Load Demo</button>
+            <button onclick="toggleDark()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400" aria-label="Toggle dark mode">
+                <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+            <button onclick="printInvoice()" class="hidden sm:inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl hover:shadow-lg hover:shadow-indigo-500/20 active:scale-95 transition-all">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                <span data-i18n="print_pdf">Print / PDF</span>
+            </button>
+        </div>
+    </div>
+</header>
+<aside class="max-w-7xl mx-auto px-4 sm:px-6 mt-4"><div id="ad-top" class="w-full h-[90px] rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-600 text-sm"><span>Advertisement Space (728 x 90)</span></div></aside>
+<nav class="sm:hidden max-w-7xl mx-auto px-4 mt-4"><div class="flex bg-slate-100 dark:bg-slate-900 rounded-xl p-1 gap-1">
+    <button onclick="showTab('edit')" id="tab-edit" class="flex-1 py-2 text-sm font-semibold rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm transition-all" data-i18n="form_editor">Form Editor</button>
+    <button onclick="showTab('preview')" id="tab-preview" class="flex-1 py-2 text-sm font-medium rounded-lg text-slate-500 dark:text-slate-400 transition-all" data-i18n="live_preview">Live Preview</button>
+</div></nav>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8"><div class="grid lg:grid-cols-5 gap-6 lg:gap-8">
+<div id="panel-edit" class="lg:col-span-3 space-y-5 fade-in"><section class="bg-white dark:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-slate-200/80 dark:border-slate-800/80 p-5 sm:p-7">
+    <h2 class="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white mb-5">
+        <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span data-i18n="your_business">Your Business</span>
+    </h2>
+    <div class="grid sm:grid-cols-2 gap-3">
+        <input id="from-name" oninput="update()" data-i18n-placeholder="ph_company" placeholder="Company / Your Name" class="input-field">
+        <input id="from-email" oninput="update()" type="email" data-i18n-placeholder="ph_email" placeholder="Email Address" class="input-field">
+        <input id="from-address" oninput="update()" data-i18n-placeholder="ph_address" placeholder="Street Address" class="input-field sm:col-span-2">
+        <input id="from-phone" oninput="update()" type="tel" data-i18n-placeholder="ph_phone" placeholder="Phone Number" class="input-field">
+        <input id="from-website" oninput="update()" type="url" data-i18n-placeholder="ph_website" placeholder="Website" class="input-field">
+    </div>
+</section>
+<section class="bg-white dark:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-slate-200/80 dark:border-slate-800/80 p-5 sm:p-7">
+    <h2 class="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white mb-5">
+        <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span data-i18n="bill_to">Bill To</span>
+    </h2>
+    <div class="grid sm:grid-cols-2 gap-3">
+        <input id="to-name" oninput="update()" data-i18n-placeholder="ph_client_name" placeholder="Client Name / Company" class="input-field">
+        <input id="to-email" oninput="update()" type="email" data-i18n-placeholder="ph_client_email" placeholder="Client Email" class="input-field">
+        <input id="to-address" oninput="update()" data-i18n-placeholder="ph_client_address" placeholder="Client Address" class="input-field sm:col-span-2">
+    </div>
+</section>
+<section class="bg-white dark:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-slate-200/80 dark:border-slate-800/80 p-5 sm:p-7">
+    <h2 class="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white mb-5">
+        <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span data-i18n="invoice_details">Invoice Details</span>
+    </h2>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div><label class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block" data-i18n="invoice_number">Invoice #</label><input id="inv-number" oninput="update()" class="input-field" value="INV-001"></div>
+        <div><label class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block" data-i18n="issue_date">Issue Date</label><input id="inv-date" oninput="update()" type="date" class="input-field"></div>
+        <div><label class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block" data-i18n="due_date">Due Date</label><input id="inv-due" oninput="update()" type="date" class="input-field"></div>
+        <div><label class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block" data-i18n="currency">Currency</label>
+            <select id="inv-currency" onchange="update()" class="input-field">
+                <option value="USD">$ USD</option><option value="EUR">&euro; EUR</option><option value="GBP">&pound; GBP</option>
+                <option value="CNY">&yen; CNY</option><option value="JPY">&yen; JPY</option><option value="CAD">$ CAD</option><option value="AUD">$ AUD</option>
+            </select>
+        </div>
+    </div>
+</section>
+<section class="bg-white dark:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-slate-200/80 dark:border-slate-800/80 p-5 sm:p-7">
+    <h2 class="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white mb-5">
+        <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        <span data-i18n="line_items">Line Items</span>
+    </h2>
+    <div class="overflow-x-auto -mx-5 sm:-mx-7 px-5 sm:px-7">
+        <table class="w-full text-sm"><thead><tr class="text-left text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+            <th class="pb-3 pr-3 min-w-[140px]" data-i18n="description">Description</th><th class="pb-3 w-16 text-center" data-i18n="qty">Qty</th><th class="pb-3 w-24 text-right" data-i18n="rate">Rate</th><th class="pb-3 w-24 text-right" data-i18n="amount">Amount</th><th class="pb-3 w-10"></th>
+        </tr></thead><tbody id="items-body"></tbody></table>
+    </div>
+    <button onclick="addItem()" class="mt-4 inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-950/30 rounded-xl transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span data-i18n="add_row">Add Row</span>
+    </button>
+</section><section class="bg-white dark:bg-slate-900/70 backdrop-blur-sm rounded-2xl border border-slate-200/80 dark:border-slate-800/80 p-5 sm:p-7">
+    <div class="grid sm:grid-cols-2 gap-5">
+        <div>
+            <h2 class="flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white mb-4">
+                <svg class="w-5 h-5 text-indigo-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>
+                <span data-i18n="notes_terms">Notes &amp; Terms</span>
+            </h2>
+            <textarea id="inv-notes" oninput="update()" rows="5" data-i18n-placeholder="ph_notes" placeholder="Payment terms, bank details, thank you message..." class="input-field resize-none"></textarea>
+        </div>
+        <div>
+            <h2 class="text-base font-semibold text-slate-900 dark:text-white mb-4" data-i18n="tax_discount">Tax &amp; Discount</h2>
+            <div class="grid grid-cols-2 gap-3 mb-4">
+                <div><label class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block" data-i18n="tax_pct">Tax (%)</label><input id="inv-tax" oninput="update()" type="number" min="0" max="100" step="0.5" value="0" class="input-field"></div>
+                <div><label class="text-xs font-medium text-slate-500 dark:text-slate-400 mb-1 block" data-i18n="discount_pct">Discount (%)</label><input id="inv-discount" oninput="update()" type="number" min="0" max="100" step="0.5" value="0" class="input-field"></div>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 space-y-2 text-sm">
+                <div class="flex justify-between text-slate-500 dark:text-slate-400"><span data-i18n="subtotal">Subtotal</span><span id="sum-subtotal">$0.00</span></div>
+                <div class="flex justify-between text-slate-500 dark:text-slate-400"><span data-i18n="tax">Tax</span><span id="sum-tax">$0.00</span></div>
+                <div class="flex justify-between text-slate-500 dark:text-slate-400"><span data-i18n="discount">Discount</span><span id="sum-discount">-$0.00</span></div>
+                <div class="flex justify-between pt-2 border-t border-slate-200 dark:border-slate-700 text-base font-bold text-slate-900 dark:text-white"><span data-i18n="total_due">Total Due</span><span id="sum-total">$0.00</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="sm:hidden pt-2">
+    <button onclick="printInvoice()" class="w-full flex items-center justify-center gap-2 px-5 py-3.5 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-indigo-500/20 active:scale-95 transition-all">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        <span data-i18n="print_pdf">Print / PDF</span>
+    </button>
+</div>
+</div>
+<div id="panel-preview" class="lg:col-span-2 space-y-5 fade-in">
+    <div class="sticky top-20">
+        <div id="invoice-preview" class="bg-white rounded-2xl shadow-xl shadow-slate-200/40 dark:shadow-none border border-slate-200/80 dark:border-slate-800/80 p-8 sm:p-10 print-area text-slate-900">
+            <div class="text-center text-slate-400 py-20">
+                <svg class="w-16 h-16 mx-auto mb-4 text-slate-300 dark:text-slate-700" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6"/></svg>
+                <p class="text-sm" data-i18n="preview_placeholder">Invoice preview will render here in real-time.</p>
+            </div>
+        </div>
+        <div id="ad-sidebar" class="mt-5 w-full h-[250px] rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-600 text-sm"><span>Ad Space (300 x 250)</span></div>
+    </div>
+</div>
+</div></main>
+<aside class="max-w-7xl mx-auto px-4 sm:px-6 pb-6"><div class="grid sm:grid-cols-2 gap-4">
+    <div id="ad-bottom" class="h-[90px] rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-600 text-sm"><span>Ad Space (728 x 90)</span></div>
+    <div id="donate-block" class="h-[90px] rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 dark:from-amber-950/20 dark:to-orange-950/20 border border-amber-200/60 dark:border-amber-800/40 flex items-center justify-between px-6 hover:shadow-md transition-all">
+        <div class="flex items-center gap-3">
+            <span class="text-2xl">&#9749;</span>
+            <div>
+                <p class="text-sm font-semibold text-amber-800 dark:text-amber-300" data-i18n="enjoying">Enjoying InvoiceCraft?</p>
+                <p class="text-xs text-amber-600 dark:text-amber-400" data-i18n="coffee_text">Buy me a coffee to keep this tool free!</p>
+            </div>
+        </div>
+        <a href="#" onclick="showDonate();return false" class="text-xs font-bold bg-amber-600 hover:bg-amber-700 text-white px-3 py-2 rounded-lg shadow-sm" data-i18n="support_btn">Support Me</a>
+    </div>
+</div></aside>
+<footer class="border-t border-slate-200/60 dark:border-slate-800/60 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6">
+        <div class="grid sm:grid-cols-3 gap-8 mb-8">
+            <div>
+                <h4 class="text-sm font-semibold text-slate-900 dark:text-white mb-3">InvoiceCraft</h4>
+                <p class="text-xs text-slate-400 dark:text-slate-500 leading-relaxed" data-i18n="footer_text">&copy; 2026 InvoiceCraft. All data is processed locally &mdash; your information never leaves your browser.</p>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-slate-900 dark:text-white mb-3">Resources</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="blog/how-to-write-professional-invoice.html" class="text-slate-400 hover:text-indigo-500 transition-colors">How to Write a Professional Invoice</a></li>
+                    <li><a href="blog/freelancer-tax-billing-guide-2026.html" class="text-slate-400 hover:text-indigo-500 transition-colors">Freelancer Tax & Billing Guide</a></li>
+                    <li><a href="blog/invoice-payment-terms-guide.html" class="text-slate-400 hover:text-indigo-500 transition-colors">Invoice Payment Terms Guide</a></li>
+                    <li><a href="blog/cross-border-ecommerce-invoicing-guide.html" class="text-slate-400 hover:text-indigo-500 transition-colors">Cross-Border Invoicing Guide</a></li>
+                    <li><a href="blog/best-free-invoice-software-2026.html" class="text-slate-400 hover:text-indigo-500 transition-colors">Best Free Invoice Software 2026</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-sm font-semibold text-slate-900 dark:text-white mb-3">Product</h4>
+                <ul class="space-y-2 text-xs">
+                    <li><a href="#panel-edit" class="text-slate-400 hover:text-indigo-500 transition-colors">Create Invoice</a></li>
+                    <li><a href="blog/" class="text-slate-400 hover:text-indigo-500 transition-colors">Blog & Resources</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+<div id="toast-container" class="fixed bottom-4 right-4 z-[999] space-y-2"></div>
+<div id="donate-modal" class="fixed inset-0 z-[1000] hidden">
+<div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeDonate()"></div>
+<div class="relative max-w-md mx-auto mt-16 sm:mt-24 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden mx-4">
+<div class="bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-5 text-white flex items-center justify-between">
+<div class="flex items-center gap-3"><span class="text-2xl">&#9749;</span><div><h3 class="text-lg font-bold">Support InvoiceCraft</h3><p class="text-amber-100 text-xs">Keep this tool 100% free for everyone</p></div></div>
+<button onclick="closeDonate()" class="p-1.5 hover:bg-white/20 rounded-lg transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+</div>
+<div class="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+<div>
+<p class="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-3">Scan to Pay</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="text-center">
+<div class="w-36 h-36 mx-auto rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+<img src="assets/wechat-qr.png" alt="WeChat Pay" class="w-full h-full object-contain p-1 cursor-pointer hover:scale-105 transition-transform" onclick="showPreview(this.src)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+<div class="hidden flex-col items-center gap-1 text-slate-400"><svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3z"/><path d="M21 14h-3v3"/><path d="M21 21h-3v-3"/></svg><span class="text-[10px]">Add QR Image</span></div>
+</div><p class="text-xs font-medium text-slate-600 dark:text-slate-300 mt-2">WeChat Pay / &#24494;&#20449;&#25903;&#20184;</p>
+</div>
+<div class="text-center">
+<div class="w-36 h-36 mx-auto rounded-xl border-2 border-dashed border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 flex items-center justify-center overflow-hidden">
+<img src="assets/alipay-qr.png" alt="Alipay" class="w-full h-full object-contain p-1 cursor-pointer hover:scale-105 transition-transform" onclick="showPreview(this.src)" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+<div class="hidden flex-col items-center gap-1 text-slate-400"><svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3z"/><path d="M21 14h-3v3"/><path d="M21 21h-3v-3"/></svg><span class="text-[10px]">Add QR Image</span></div>
+</div><p class="text-xs font-medium text-slate-600 dark:text-slate-300 mt-2">Alipay / &#25903;&#20184;&#23453;</p>
+</div>
+</div>
+</div>
+
+<div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 border border-dashed border-slate-300 dark:border-slate-700 text-center">
+<p class="text-sm text-slate-400 dark:text-slate-500 mb-1">Buy Me a Coffee</p>
+<p class="text-xs text-slate-300 dark:text-slate-600">Setting up... Please check back later</p>
+</div>
+</div>
+</div>
+</div><script>
+(function(){
+var LANGS={
+en:{your_business:"Your Business",bill_to:"Bill To",invoice_details:"Invoice Details",invoice_number:"Invoice #",issue_date:"Issue Date",due_date:"Due Date",currency:"Currency",line_items:"Line Items",add_row:"Add Row",notes_terms:"Notes & Terms",tax_discount:"Tax & Discount",tax_pct:"Tax (%)",discount_pct:"Discount (%)",subtotal:"Subtotal",tax:"Tax",discount:"Discount",total_due:"Total Due",print_pdf:"Print / PDF",load_demo:"Load Demo",form_editor:"Form Editor",live_preview:"Live Preview",description:"Description",qty:"Qty",rate:"Rate",amount:"Amount",footer_text:"\u00a9 2026 InvoiceCraft. All data is processed locally.",enjoying:"Enjoying InvoiceCraft?",coffee_text:"Buy me a coffee to keep this tool free!",support_btn:"Support Me",ph_company:"Company / Your Name",ph_email:"Email Address",ph_address:"Street Address",ph_phone:"Phone Number",ph_website:"Website",ph_client_name:"Client Name / Company",ph_client_email:"Client Email",ph_client_address:"Client Address",ph_notes:"Payment terms, bank details, thank you message...",preview_placeholder:"Invoice preview will render here in real-time.",toast_pdf:"Preparing your PDF...",toast_demo:"Demo data loaded!",toast_thanks:"Thank you for your kindness!",p_invoice:"INVOICE",p_billto:"Bill To",p_issuedate:"Issue Date:",p_duedate:"Due Date:",p_currency:"Currency:",p_subtotal:"Subtotal",p_tax:"Tax",p_discount:"Discount",p_total:"Total Due",p_notes:"Notes & Payment Instructions",p_thanks:"Thank you for your business!",p_noitems:"Click \"Add Row\" to populate items.",p_yourcompany:"Your Company Name",p_clientname:"Client Name / Company",p_standard:"Standard Line Item",p_untitled:"Untitled"},
+zh:{your_business:"\u60a8\u7684\u516c\u53f8",bill_to:"\u6536\u6b3e\u65b9",invoice_details:"\u53d1\u7968\u4fe1\u606f",invoice_number:"\u53d1\u7968\u7f16\u53f7",issue_date:"\u5f00\u7968\u65e5\u671f",due_date:"\u5230\u671f\u65e5\u671f",currency:"\u8d27\u5e01",line_items:"\u660e\u7ec6\u9879\u76ee",add_row:"\u6dfb\u52a0\u884c",notes_terms:"\u5907\u6ce8\u4e0e\u6761\u6b3e",tax_discount:"\u7a0e\u8d39\u4e0e\u6298\u6263",tax_pct:"\u7a0e\u7387 (%)",discount_pct:"\u6298\u6263 (%)",subtotal:"\u5c0f\u8ba1",tax:"\u7a0e\u8d39",discount:"\u6298\u6263",total_due:"\u5e94\u4ed8\u603b\u989d",print_pdf:"\u6253\u5370 / PDF",load_demo:"\u52a0\u8f7d\u793a\u4f8b",form_editor:"\u7f16\u8f91\u8868\u5355",live_preview:"\u5b9e\u65f6\u9884\u89c8",description:"\u63cf\u8ff0",qty:"\u6570\u91cf",rate:"\u5355\u4ef7",amount:"\u91d1\u989d",footer_text:"\u00a9 2026 InvoiceCraft \u00b7 \u6240\u6709\u6570\u636e\u5747\u5728\u672c\u5730\u5904\u7406\u3002",enjoying:"\u559c\u6b22 InvoiceCraft \u5417\uff1f",coffee_text:"\u8bf7\u6211\u559d\u676f\u5496\u5561\uff0c\u8ba9\u5de5\u5177\u4fdd\u6301\u514d\u8d39\uff01",support_btn:"\u652f\u6301\u4e00\u4e0b",ph_company:"\u516c\u53f8 / \u60a8\u7684\u59d3\u540d",ph_email:"\u7535\u5b50\u90ae\u7bb1",ph_address:"\u5730\u5740",ph_phone:"\u7535\u8bdd",ph_website:"\u7f51\u7ad9",ph_client_name:"\u5ba2\u6237\u59d3\u540d / \u516c\u53f8",ph_client_email:"\u5ba2\u6237\u90ae\u7bb1",ph_client_address:"\u5ba2\u6237\u5730\u5740",ph_notes:"\u4ed8\u6b3e\u6761\u6b3e\u3001\u94f6\u884c\u4fe1\u606f\u3001\u611f\u8c22\u8bed...",preview_placeholder:"\u53d1\u7968\u9884\u89c8\u5c06\u5728\u6b64\u5b9e\u65f6\u6e32\u67d3\u3002",toast_pdf:"\u6b63\u5728\u51c6\u5907 PDF...",toast_demo:"\u793a\u4f8b\u6570\u636e\u52a0\u8f7d\u6210\u529f\uff01",toast_thanks:"\u611f\u8c22\u60a8\u7684\u5584\u610f\uff01",p_invoice:"\u53d1\u7968",p_billto:"\u6536\u6b3e\u65b9",p_issuedate:"\u5f00\u7968\u65e5\u671f:",p_duedate:"\u5230\u671f\u65e5\u671f:",p_currency:"\u8d27\u5e01:",p_subtotal:"\u5c0f\u8ba1",p_tax:"\u7a0e\u8d39",p_discount:"\u6298\u6263",p_total:"\u5e94\u4ed8\u603b\u989d",p_notes:"\u5907\u6ce8\u4e0e\u4ed8\u6b3e\u8bf4\u660e",p_thanks:"\u611f\u8c22\u60a8\u7684\u5408\u4f5c\uff01",p_noitems:"\u70b9\u51fb\u201c\u6dfb\u52a0\u884c\u201d\u6765\u6dfb\u52a0\u9879\u76ee\u3002",p_yourcompany:"\u60a8\u7684\u516c\u53f8\u540d\u79f0",p_clientname:"\u5ba2\u6237\u59d3\u540d / \u516c\u53f8",p_standard:"\u6807\u51c6\u9879\u76ee",p_untitled:"\u672a\u547d\u540d"},
+ja:{your_business:"\u3054\u8acb\u6c42\u5143",bill_to:"\u8acb\u6c42\u5148",invoice_details:"\u8acb\u6c42\u66f8\u60c5\u5831",invoice_number:"\u8acb\u6c42\u66f8\u756a\u53f7",issue_date:"\u767a\u884c\u65e5",due_date:"\u652f\u6255\u671f\u9650",currency:"\u901a\u8ca8",line_items:"\u660e\u7d30\u9805\u76ee",add_row:"\u884c\u3092\u8ffd\u52a0",notes_terms:"\u5099\u8003\u30fb\u6761\u4ef6",tax_discount:"\u7a0e\u91d1\u30fb\u5272\u5f15",tax_pct:"\u6d88\u8cbb\u7a0e (%)",discount_pct:"\u5272\u5f15 (%)",subtotal:"\u5c0f\u8a08",tax:"\u7a0e\u91d1",discount:"\u5272\u5f15",total_due:"\u304a\u652f\u6255\u91d1\u984d",print_pdf:"\u5370\u5237 / PDF",load_demo:"\u30c7\u30e2\u8aad\u8fbc",form_editor:"\u30d5\u30a9\u30fc\u30e0",live_preview:"\u30d7\u30ec\u30d3\u30e5\u30fc",description:"\u6458\u8981",qty:"\u6570\u91cf",rate:"\u5358\u4fa1",amount:"\u91d1\u984d",footer_text:"\u00a9 2026 InvoiceCraft \u00b7 \u3059\u3079\u3066\u306e\u30c7\u30fc\u30bf\u306f\u30ed\u30fc\u30ab\u30eb\u3067\u51e6\u7406\u3055\u308c\u307e\u3059\u3002",enjoying:"InvoiceCraft \u3092\u697d\u3057\u3093\u3067\u3044\u307e\u3059\u304b\uff1f",coffee_text:"\u30b3\u30fc\u30d2\u30fc\u3092\u304a\u3054\u3063\u3066\u7121\u6599\u7dad\u6301\u306b\u5354\u529b\u3057\u3066\u304f\u3060\u3055\u3044\uff01",support_btn:"\u652f\u63f4\u3059\u308b",ph_company:"\u4f1a\u793e\u540d / \u304a\u540d\u524d",ph_email:"\u30e1\u30fc\u30eb\u30a2\u30c9\u30ec\u30b9",ph_address:"\u4f4f\u6240",ph_phone:"\u96fb\u8a71\u756a\u53f7",ph_website:"\u30a6\u30a7\u30d6\u30b5\u30a4\u30c8",ph_client_name:"\u304a\u5ba2\u69d8\u540d / \u4f1a\u793e\u540d",ph_client_email:"\u304a\u5ba2\u69d8\u30e1\u30fc\u30eb",ph_client_address:"\u304a\u5ba2\u69d8\u4f4f\u6240",ph_notes:"\u652f\u6255\u6761\u4ef6\u3001\u9280\u884c\u53e3\u5ea7\u3001\u611f\u8b1d\u30e1\u30c3\u30bb\u30fc\u30b8...",preview_placeholder:"\u8acb\u6c42\u66f8\u30d7\u30ec\u30d3\u30e5\u30fc\u304c\u3053\u3053\u306b\u8868\u793a\u3055\u308c\u307e\u3059\u3002",toast_pdf:"PDF\u3092\u6e96\u5099\u4e2d...",toast_demo:"\u30c7\u30e2\u30c7\u30fc\u30bf\u3092\u8aad\u307f\u8fbc\u307f\u307e\u3057\u305f\uff01",toast_thanks:"\u3042\u308a\u304c\u3068\u3046\u3054\u3056\u3044\u307e\u3059\uff01",p_invoice:"\u8acb\u6c42\u66f8",p_billto:"\u8acb\u6c42\u5148",p_issuedate:"\u767a\u884c\u65e5:",p_duedate:"\u652f\u6255\u671f\u9650:",p_currency:"\u901a\u8ca8:",p_subtotal:"\u5c0f\u8a08",p_tax:"\u7a0e\u91d1",p_discount:"\u5272\u5f15",p_total:"\u304a\u652f\u6255\u91d1\u984d",p_notes:"\u5099\u8003\u30fb\u304a\u652f\u6255\u65b9\u6cd5",p_thanks:"\u3054\u611b\u9867\u3042\u308a\u304c\u3068\u3046\u3054\u3056\u3044\u307e\u3059\uff01",p_noitems:"\u300c\u884c\u3092\u8ffd\u52a0\u300d\u3092\u30af\u30ea\u30c3\u30af\u3057\u3066\u9805\u76ee\u3092\u8ffd\u52a0\u3057\u3066\u304f\u3060\u3055\u3044\u3002",p_yourcompany:"\u4f1a\u793e\u540d",p_clientname:"\u304a\u5ba2\u69d8\u540d / \u4f1a\u793e\u540d",p_standard:"\u6a19\u6e96\u9805\u76ee",p_untitled:"\u7121\u984c"},
+es:{your_business:"Tu Empresa",bill_to:"Facturar A",invoice_details:"Detalles de Factura",invoice_number:"N\u00ba Factura",issue_date:"Emisi\u00f3n",due_date:"Vencimiento",currency:"Moneda",line_items:"Conceptos",add_row:"Agregar Fila",notes_terms:"Notas y Condiciones",tax_discount:"Impuesto y Descuento",tax_pct:"Impuesto (%)",discount_pct:"Descuento (%)",subtotal:"Subtotal",tax:"Impuesto",discount:"Descuento",total_due:"Total a Pagar",print_pdf:"Imprimir / PDF",load_demo:"Cargar Demo",form_editor:"Formulario",live_preview:"Vista Previa",description:"Descripci\u00f3n",qty:"Cant.",rate:"Precio",amount:"Importe",footer_text:"\u00a9 2026 InvoiceCraft \u00b7 Todos los datos se procesan localmente.",enjoying:"\u00bfDisfrutando InvoiceCraft?",coffee_text:"\u00a1Inv\u00edtame a un caf\u00e9 para mantener esta herramienta gratis!",support_btn:"Apoyar",ph_company:"Empresa / Su Nombre",ph_email:"Correo Electr\u00f3nico",ph_address:"Direcci\u00f3n",ph_phone:"Tel\u00e9fono",ph_website:"Sitio Web",ph_client_name:"Cliente / Empresa",ph_client_email:"Correo del Cliente",ph_client_address:"Direcci\u00f3n del Cliente",ph_notes:"Condiciones de pago, datos bancarios, agradecimiento...",preview_placeholder:"La vista previa se renderizar\u00e1 aqu\u00ed en tiempo real.",toast_pdf:"Preparando su PDF...",toast_demo:"\u00a1Datos cargados!",toast_thanks:"\u00a1Gracias por su generosidad!",p_invoice:"FACTURA",p_billto:"Facturar A",p_issuedate:"Emisi\u00f3n:",p_duedate:"Vencimiento:",p_currency:"Moneda:",p_subtotal:"Subtotal",p_tax:"Impuesto",p_discount:"Descuento",p_total:"Total a Pagar",p_notes:"Notas e Instrucciones de Pago",p_thanks:"\u00a1Gracias por su confianza!",p_noitems:"Clic en \"Agregar Fila\" para a\u00f1adir conceptos.",p_yourcompany:"Nombre de su empresa",p_clientname:"Cliente / Empresa",p_standard:"Concepto est\u00e1ndar",p_untitled:"Sin t\u00edtulo"},
+pt:{your_business:"Sua Empresa",bill_to:"Faturar Para",invoice_details:"Detalhes da Fatura",invoice_number:"N\u00ba Fatura",issue_date:"Emiss\u00e3o",due_date:"Vencimento",currency:"Moeda",line_items:"Itens",add_row:"Adicionar Linha",notes_terms:"Notas e Termos",tax_discount:"Imposto e Desconto",tax_pct:"Imposto (%)",discount_pct:"Desconto (%)",subtotal:"Subtotal",tax:"Imposto",discount:"Desconto",total_due:"Total a Pagar",print_pdf:"Imprimir / PDF",load_demo:"Carregar Demo",form_editor:"Formul\u00e1rio",live_preview:"Pr\u00e9-visualiza\u00e7\u00e3o",description:"Descri\u00e7\u00e3o",qty:"Qtd.",rate:"Pre\u00e7o",amount:"Valor",footer_text:"\u00a9 2026 InvoiceCraft \u00b7 Todos os dados s\u00e3o processados localmente.",enjoying:"Gostando do InvoiceCraft?",coffee_text:"Me pague um caf\u00e9 para manter esta ferramenta gratuita!",support_btn:"Apoiar",ph_company:"Empresa / Seu Nome",ph_email:"E-mail",ph_address:"Endere\u00e7o",ph_phone:"Telefone",ph_website:"Website",ph_client_name:"Cliente / Empresa",ph_client_email:"E-mail do Cliente",ph_client_address:"Endere\u00e7o do Cliente",ph_notes:"Termos de pagamento, dados banc\u00e1rios, agradecimento...",preview_placeholder:"A pr\u00e9-visualiza\u00e7\u00e3o ser\u00e1 exibida aqui em tempo real.",toast_pdf:"Preparando seu PDF...",toast_demo:"Dados carregados!",toast_thanks:"Obrigado pela sua generosidade!",p_invoice:"FATURA",p_billto:"Faturar Para",p_issuedate:"Emiss\u00e3o:",p_duedate:"Vencimento:",p_currency:"Moeda:",p_subtotal:"Subtotal",p_tax:"Imposto",p_discount:"Desconto",p_total:"Total a Pagar",p_notes:"Notas e Instru\u00e7\u00f5es de Pagamento",p_thanks:"Obrigado pela sua prefer\u00eancia!",p_noitems:"Clique em \"Adicionar Linha\" para inserir itens.",p_yourcompany:"Nome da sua empresa",p_clientname:"Cliente / Empresa",p_standard:"Item padr\u00e3o",p_untitled:"Sem t\u00edtulo"}
+};var SYM={USD:'$',EUR:'\u20ac',GBP:'\u00a3',CNY:'\u00a5',JPY:'\u00a5',CAD:'$',AUD:'$'};
+var items=[{desc:'',qty:1,rate:0}];
+var currentTab='edit',currentLang='en';
+function t(k){return(LANGS[currentLang]&&LANGS[currentLang][k])||LANGS['en'][k]||k}
+window.setLang=function(lang){
+    currentLang=lang;try{localStorage.setItem('ic-lang',lang)}catch(e){}
+    document.documentElement.lang=lang;
+    document.querySelectorAll('[data-i18n]').forEach(function(el){var k=el.getAttribute('data-i18n');if(LANGS[lang]&&LANGS[lang][k])el.textContent=LANGS[lang][k];else if(LANGS['en'][k])el.textContent=LANGS['en'][k]});
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el){var k=el.getAttribute('data-i18n-placeholder');if(LANGS[lang]&&LANGS[lang][k])el.placeholder=LANGS[lang][k];else if(LANGS['en'][k])el.placeholder=LANGS['en'][k]});
+    update();
+};
+function init(){
+    var today=new Date().toISOString().split('T')[0];
+    document.getElementById('inv-date').value=today;
+    var due=new Date();due.setDate(due.getDate()+30);
+    document.getElementById('inv-due').value=due.toISOString().split('T')[0];
+    try{var s=localStorage.getItem('ic-lang');if(s&&LANGS[s]){currentLang=s;document.getElementById('lang-select').value=s;document.documentElement.lang=s}}catch(e){}
+    setLang(currentLang);
+    if(!loadStorage()){loadDemoData()}else{renderItems();update()}
+}
+window.toggleDark=function(){document.documentElement.classList.toggle('dark');localStorage.setItem('ic-dark',document.documentElement.classList.contains('dark'))};
+if(localStorage.getItem('ic-dark')==='true'||(!localStorage.getItem('ic-dark')&&window.matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');
+window.showTab=function(tab){
+    currentTab=tab;var ep=document.getElementById('panel-edit'),pp=document.getElementById('panel-preview'),te=document.getElementById('tab-edit'),tp=document.getElementById('tab-preview');
+    if(tab==='edit'){ep.classList.remove('hidden');pp.classList.add('hidden');te.className='flex-1 py-2 text-sm font-semibold rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm transition-all';tp.className='flex-1 py-2 text-sm font-medium rounded-lg text-slate-500 dark:text-slate-400 transition-all'}
+    else{ep.classList.add('hidden');pp.classList.remove('hidden');te.className='flex-1 py-2 text-sm font-medium rounded-lg text-slate-500 dark:text-slate-400 transition-all';tp.className='flex-1 py-2 text-sm font-semibold rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white shadow-sm transition-all';update()}
+};
+window.addEventListener('resize',function(){if(window.innerWidth>=640){document.getElementById('panel-edit').classList.remove('hidden');document.getElementById('panel-preview').classList.remove('hidden')}else showTab(currentTab)});
+if(window.innerWidth<640)document.getElementById('panel-preview').classList.add('hidden');
+function cur(){return document.getElementById('inv-currency').value}
+function sym(){return SYM[cur()]||'$'}
+function fmt(n){return sym()+Number(n).toFixed(2)}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+window.addItem=function(){items.push({desc:'',qty:1,rate:0});renderItems();update()};
+window.removeItem=function(i){if(items.length<=1)return;items.splice(i,1);renderItems();update()};
+window.loadDemoData=function(){
+    document.getElementById('from-name').value='Alpha Cybernetics Ltd.';document.getElementById('from-email').value='billing@alphacyber.io';
+    document.getElementById('from-address').value='1024 Quantum Drive, Suite 404, San Francisco, CA';document.getElementById('from-phone').value='+1 (555) 019-2831';document.getElementById('from-website').value='alphacyber.io';
+    document.getElementById('to-name').value='Starlight Venture Capital';document.getElementById('to-email').value='finance@starlight.vc';document.getElementById('to-address').value='77 Infinite Loop, Building 3, Cupertino, CA';
+    document.getElementById('inv-number').value='INV-2026-001';document.getElementById('inv-currency').value='USD';document.getElementById('inv-tax').value='8.5';document.getElementById('inv-discount').value='10';
+    document.getElementById('inv-notes').value='Thank you for your partnership. Please remit payment within 30 days.';
+    items=[{desc:'Premium AI Automation Engine Architecture Design & Consulting',qty:1,rate:4500},{desc:'Cloud Infrastructure Deployment & Security Audit Tokens',qty:3,rate:1200}];
+    renderItems();update();showToast(t('toast_demo'));
+};
+function renderItems(){
+    var tbody=document.getElementById('items-body');tbody.innerHTML='';
+    items.forEach(function(it,i){
+        var tr=document.createElement('tr');tr.className='border-b border-slate-100 dark:border-slate-800 last:border-0';
+        tr.innerHTML='<td class="py-2.5 pr-2"><input data-i="'+i+'" data-f="desc" value="'+esc(it.desc)+'" placeholder="'+t('p_standard')+'" class="item-input"></td>'
+            +'<td class="py-2.5 pr-2"><input data-i="'+i+'" data-f="qty" type="number" min="1" step="1" value="'+it.qty+'" class="item-input text-center w-16"></td>'
+            +'<td class="py-2.5 pr-2"><input data-i="'+i+'" data-f="rate" type="number" min="0" step="0.01" value="'+it.rate+'" class="item-input text-right w-24"></td>'
+            +'<td class="py-2.5 pr-2 text-right text-sm font-medium text-slate-700 dark:text-slate-300 whitespace-nowrap">'+fmt(it.qty*it.rate)+'</td>'
+            +'<td class="py-2.5 text-right"><button onclick="removeItem('+i+')" class="p-1.5 rounded-lg hover:bg-red-50 dark:hover:bg-red-950/30 text-slate-400 hover:text-red-500 transition-all"'+(items.length<=1?' disabled style="opacity:.2;cursor:not-allowed"':'')+'><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button></td>';
+        tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll('input').forEach(function(inp){
+        inp.addEventListener('input',function(){var idx=+this.dataset.i,f=this.dataset.f;if(f==='desc')items[idx].desc=this.value;else if(f==='qty')items[idx].qty=Math.max(1,parseInt(this.value)||1);else if(f==='rate')items[idx].rate=Math.max(0,parseFloat(this.value)||0);this.closest('tr').children[3].textContent=fmt(items[idx].qty*items[idx].rate);update()});
+    });
+}
+window.update=function(){
+    var tax=parseFloat(document.getElementById('inv-tax').value)||0,disc=parseFloat(document.getElementById('inv-discount').value)||0,sub=0;
+    items.forEach(function(it){sub+=it.qty*it.rate});
+    var tA=sub*tax/100,dA=sub*disc/100,total=sub+tA-dA;
+    document.getElementById('sum-subtotal').textContent=fmt(sub);document.getElementById('sum-tax').textContent=fmt(tA);
+    document.getElementById('sum-discount').textContent='-'+fmt(dA);document.getElementById('sum-total').textContent=fmt(total);
+    updatePreview(sub,tA,dA,total,tax,disc);saveStorage();
+};
+function updatePreview(sub,tax,disc,total,taxRate,discRate){
+    var v=function(id){return document.getElementById(id).value||''};
+    var fp=function(d){if(!d)return'\u2014';var dt=new Date(d+'T00:00:00');return dt.toLocaleDateString('en-US',{year:'numeric',month:'short',day:'numeric'})};
+    var rows='';items.forEach(function(it){if(!it.desc&&it.qty===1&&it.rate===0)return;rows+='<tr class="border-b border-slate-100"><td class="py-2 pr-4 text-slate-700">'+esc(it.desc||t('p_untitled'))+'</td><td class="py-2 px-4 text-center text-slate-500">'+it.qty+'</td><td class="py-2 px-4 text-right text-slate-500">'+fmt(it.rate)+'</td><td class="py-2 pl-4 text-right font-medium text-slate-900">'+fmt(it.qty*it.rate)+'</td></tr>'});
+    var notes=v('inv-notes'),pl=v('from-phone');if(v('from-website'))pl+=(pl?' \u00b7 ':'')+v('from-website');
+    var h='<div class="flex justify-between items-start mb-8 pb-6 border-b border-slate-200"><div><h3 class="text-xl font-bold text-slate-900">'+esc(v('from-name')||t('p_yourcompany'))+'</h3><p class="text-sm text-slate-500 mt-1">'+esc(v('from-email'))+'</p><p class="text-sm text-slate-500">'+esc(v('from-address'))+'</p><p class="text-sm text-slate-500">'+esc(pl)+'</p></div>'
+        +'<div class="text-right"><h2 class="text-2xl font-bold text-indigo-600 tracking-tight">'+t('p_invoice')+'</h2><p class="text-sm text-slate-500 mt-1">'+esc(v('inv-number'))+'</p></div></div>'
+        +'<div class="grid grid-cols-2 gap-6 mb-8"><div><p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">'+t('p_billto')+'</p><p class="text-sm font-semibold text-slate-900">'+esc(v('to-name')||t('p_clientname'))+'</p><p class="text-sm text-slate-500">'+esc(v('to-email'))+'</p><p class="text-sm text-slate-500">'+esc(v('to-address'))+'</p></div>'
+        +'<div class="text-right space-y-1"><p class="text-sm"><span class="text-slate-400">'+t('p_issuedate')+' </span><span class="font-medium text-slate-700">'+fp(v('inv-date'))+'</span></p><p class="text-sm"><span class="text-slate-400">'+t('p_duedate')+' </span><span class="font-medium text-slate-700">'+fp(v('inv-due'))+'</span></p><p class="text-sm"><span class="text-slate-400">'+t('p_currency')+' </span><span class="font-medium text-slate-700">'+cur()+'</span></p></div></div>'
+        +'<table class="w-full text-sm mb-6"><thead><tr class="border-b-2 border-slate-900 text-xs font-semibold text-slate-500 uppercase tracking-wider"><th class="text-left pb-2 pr-4">'+t('description')+'</th><th class="text-center pb-2 px-4">'+t('qty')+'</th><th class="text-right pb-2 px-4">'+t('rate')+'</th><th class="text-right pb-2 pl-4">'+t('amount')+'</th></tr></thead><tbody>'+(rows||'<tr><td colspan="4" class="py-6 text-center text-slate-400">'+t('p_noitems')+'</td></tr>')+'</tbody></table>'
+        +'<div class="flex justify-end mb-8"><div class="w-64 space-y-1.5 text-sm"><div class="flex justify-between text-slate-500"><span>'+t('p_subtotal')+'</span><span>'+fmt(sub)+'</span></div>';
+    if(taxRate>0)h+='<div class="flex justify-between text-slate-500"><span>'+t('p_tax')+' ('+taxRate+'%)</span><span>'+fmt(tax)+'</span></div>';
+    if(discRate>0)h+='<div class="flex justify-between text-slate-500"><span>'+t('p_discount')+' ('+discRate+'%)</span><span class="text-green-600">-'+fmt(disc)+'</span></div>';
+    h+='<div class="flex justify-between pt-2 border-t border-slate-200 text-base font-bold text-slate-900"><span>'+t('p_total')+'</span><span>'+fmt(total)+'</span></div></div></div>';
+    if(notes)h+='<div class="pt-6 border-t border-slate-100"><p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">'+t('p_notes')+'</p><p class="text-sm text-slate-600 whitespace-pre-wrap">'+esc(notes)+'</p></div>';
+    h+='<div class="mt-8 pt-4 border-t border-slate-100 text-center text-xs text-slate-400">'+t('p_thanks')+'</div>';
+    document.getElementById('invoice-preview').innerHTML=h;
+}
+window.printInvoice=function(){update();showToast(t('toast_pdf'));setTimeout(function(){window.print()},400)};
+function saveStorage(){var v=function(id){return document.getElementById(id).value||''};try{localStorage.setItem('ic-data',JSON.stringify({from:{name:v('from-name'),email:v('from-email'),address:v('from-address'),phone:v('from-phone'),website:v('from-website')},to:{name:v('to-name'),email:v('to-email'),address:v('to-address')},inv:{number:v('inv-number'),date:v('inv-date'),due:v('inv-due'),currency:cur(),tax:v('inv-tax'),discount:v('inv-discount'),notes:v('inv-notes')},items:items}))}catch(e){}}
+function loadStorage(){try{var d=JSON.parse(localStorage.getItem('ic-data'));if(!d)return false;if(d.from){s2('from-name',d.from.name);s2('from-email',d.from.email);s2('from-address',d.from.address);s2('from-phone',d.from.phone);s2('from-website',d.from.website)}if(d.to){s2('to-name',d.to.name);s2('to-email',d.to.email);s2('to-address',d.to.address)}if(d.inv){s2('inv-number',d.inv.number);s2('inv-date',d.inv.date);s2('inv-due',d.inv.due);s2('inv-currency',d.inv.currency);s2('inv-tax',d.inv.tax);s2('inv-discount',d.inv.discount);s2('inv-notes',d.inv.notes)}if(d.items&&d.items.length)items=d.items;return true}catch(e){return false}}
+function s2(id,val){if(val!=null)document.getElementById(id).value=val}
+function showToast(msg){var c=document.getElementById('toast-container'),el=document.createElement('div');el.className='toast-in flex items-center gap-2 px-4 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl text-sm font-semibold text-slate-700 dark:text-slate-200';el.innerHTML='<svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>'+msg;c.appendChild(el);setTimeout(function(){el.classList.replace('toast-in','toast-out');setTimeout(function(){el.remove()},300)},2500)}
+window.showDonate=function(){document.getElementById("donate-modal").classList.remove("hidden");document.body.style.overflow="hidden"};
+window.showPreview=function(src){var el=document.getElementById("qr-preview-img");if(!src||src.endsWith("/"))return;el.src=src;document.getElementById("qr-lightbox").classList.remove("hidden");document.body.style.overflow="hidden"};
+window.closePreview=function(){document.getElementById("qr-lightbox").classList.add("hidden");document.body.style.overflow=""};
+window.closeDonate=function(){document.getElementById("donate-modal").classList.add("hidden");document.body.style.overflow=""};
+init();
+})();
+</script>
+
+<div id="qr-lightbox" class="fixed inset-0 z-[1100] hidden flex items-center justify-center" onclick="closePreview()">
+<div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div>
+<div class="relative p-4" onclick="event.stopPropagation()">
+<img id="qr-preview-img" src="" alt="QR Code" class="max-w-[280px] sm:max-w-xs rounded-2xl shadow-2xl bg-white p-4">
+<button onclick="closePreview()" class="absolute -top-3 -right-3 w-8 h-8 flex items-center justify-center bg-slate-900/80 hover:bg-slate-900 text-white rounded-full shadow-lg transition-colors"><svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+</div>
+</div>
+</body>
+</html>

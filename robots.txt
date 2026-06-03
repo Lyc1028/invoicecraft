@@ -1,0 +1,3 @@
+﻿User-agent: *
+Allow: /
+Sitemap: https://lyc1028.github.io/invoicecraft/sitemap.xml
